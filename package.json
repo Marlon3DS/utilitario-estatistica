@@ -1,0 +1,26 @@
+{
+  "name": "utilitario-estatistica",
+  "version": "1.0.0",
+  "description": "Ferramenta para auxilio de resolução de problemas estatisticos",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "nodemon backend/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marlon3DS/utilitario-estatistica.git"
+  },
+  "author": "Marlon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marlon3DS/utilitario-estatistica/issues"
+  },
+  "homepage": "https://github.com/Marlon3DS/utilitario-estatistica#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
