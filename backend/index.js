@@ -12,9 +12,39 @@ const calculateData = function (inp) {
     var classes = [];
     var inicial = 0;
     var final = 0;
+    var _Fa = 0;
     var calculateModa = function (obj) {
-        //TODO calcular Moda
+        var d1 = obj.fi - classes.filter((row) => {
+            if (row.i == obj.i - 1) return row;
+        })[0].fi;
+        var d2 = obj.fi - classes.filter((row) => {
+            if (row.i == obj.i + 1) return row;
+        })[0].fi;
+        return obj.li + (d1 / (d1 + d2)) * h;
     };
+    var calculate = function (obj, mult, div) {
+        let Fa = classes.filter((row) => {
+            if (row.i == obj.i - 1) return row;
+        });
+        Fa = Fa.length > 0 ? (Fa[0].F ? Fa[0].F : Fa.F) : null;
+        return obj.li + ((mult * n / div - Fa) / obj.fi) * h;
+    };
+    var getClasse = function (div) {
+        var ret = [];
+        if (div == 100) div = 10;
+        for (let indice = 1; indice <= div; indice++) {
+            classes.forEach((cur, index) => {
+                var prev = index - 1 >= 0 ? classes[index - 1].F : 0;
+                if (indice * n / div >= prev && indice * n / div < cur.F) {
+                    let obj = {};
+                    obj[indice] = calculate(cur, indice, div);
+                    ret.push(obj);
+                    return;
+                }
+            });
+        }
+        return ret;
+    }
     for (let index = 1; index <= i; index++) {
         inicial = final <= 0 ? rol[0] : final;
         final = rol[0] + h * index;
@@ -32,20 +62,30 @@ const calculateData = function (inp) {
         if (index == i) {
             obj.Li = rol[n - 1];
         }
+        _Fa += obj.fi;
+        obj.F = _Fa;
         obj.fi_xi = obj.fi * obj.xi;
         obj.fr = obj.fi / n;
         obj.f_percent = obj.fr * 100;
         classes.push(obj);
     }
-    var x_barra = classes.map(e => e.fi_xi).reduce((total, curr) => total + curr) / n;
+    var x_barra = classes.map(e => e.fi_xi).reduce((total, cur) => total + cur) / n;
     var Mo = calculateModa(classes.reduce((acc, cur) => acc.fi < cur.fi ? cur : acc));
+    var Md = getClasse(2)[0][1];
+    var Quartil = getClasse(4);
+    var Decil = getClasse(10);
+    var Percentil = getClasse(100);
     return {
         rol,
         i,
         h,
         classes,
         x_barra,
-        Mo
+        Mo,
+        Md,
+        Quartil,
+        Decil,
+        Percentil
     };
 };
 
